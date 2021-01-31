@@ -3,3 +3,8 @@
    10  git log --pretty=oneline
    12  git commit -F commit.txt --allow-empty
    13  history >> git_commands.txt
+    1  git status
+    2  git notes
+    3  git notest 'test
+   22  git status --ignored
+   26  history >> git_commands.txt
