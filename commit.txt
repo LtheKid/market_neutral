@@ -1,2 +1,0 @@
-Deleted stock_count variable as not used.
-Added bar chart to display directional strength
