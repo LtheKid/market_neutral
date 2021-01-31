@@ -8,3 +8,23 @@
     3  git notest 'test
    22  git status --ignored
    26  history >> git_commands.txt
+git commit -m message without changes --allow-empty
+
+
+Print Line N from History:i
+History N # Prints last few lines from history
+!55:p # Prints line 55 of history
+
+
+history -c
+
+
+Vim commands
+
+shift + a: Goto end of line
+shift + g: Goto last line
+3, then shift + g: Goto line 3
+
+
+
+:w python prod.py
