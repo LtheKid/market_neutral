@@ -1,0 +1,5 @@
+    1  git status
+    2  git notes
+   10  git log --pretty=oneline
+   12  git commit -F commit.txt --allow-empty
+   13  history >> git_commands.txt
