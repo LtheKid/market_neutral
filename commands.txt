@@ -1,17 +1,20 @@
-    1  git status
-    2  git notes
-   10  git log --pretty=oneline
-   12  git commit -F commit.txt --allow-empty
-   13  history >> git_commands.txt
-    1  git status
-    2  git notes
-    3  git notest 'test
-   22  git status --ignored
-   26  history >> git_commands.txt
+git status
+git status --ignored
+git log --pretty=oneline
+git commit -F commit.txt --allow-empty
+history >> git_commands.txt
+git status --ignored
+history >> git_commands.txt
 git commit -m message without changes --allow-empty
 
 
-Print Line N from History:i
+View Git Commit and Branch Tree:
+git log --graph --pretty=oneline --abbrev-commit
+git log --graph --oneline --decorate --all
+
+
+
+Print Line N from History:
 History N # Prints last few lines from history
 !55:p # Prints line 55 of history
 
@@ -26,5 +29,9 @@ shift + g: Goto last line
 3, then shift + g: Goto line 3
 
 
-
+Execute in python:
 :w python prod.py
+:w !ipython
+
+View file text
+cat commands.txt
