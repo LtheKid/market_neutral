@@ -26,7 +26,7 @@ else:
 # Get 20 day returns and rank
 ranked_momentum = pd.DataFrame(df.pct_change(20).mean().sort_values(ascending = False)) # Ascending to descending returns
 ranked_momentum.columns = ['20_day_returns']
-ranked_momentum['rank'] = ranked_assets['20_day_returns'].rank()
+ranked_momentum['rank'] = ranked_momentum['20_day_returns'].rank()
 ranked_momentum
 
 #moving average short/long term
