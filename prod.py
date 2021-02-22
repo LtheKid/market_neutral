@@ -23,49 +23,35 @@ else:
     df.combine_first(pd.read_csv('data.csv', index_col = 'Date', parse_dates=True)).to_csv('data.csv') #update local data source
     
 
-
 # Get 20 day returns and rank
-ranked_assets = pd.DataFrame(df.pct_change(20).mean().sort_values(ascending = False)) # Ascending to descending returns
-ranked_assets # full assets
+ranked_momentum = pd.DataFrame(df.pct_change(20).mean().sort_values(ascending = False)) # Ascending to descending returns
+ranked_momentum.columns = ['20_day_returns']
+ranked_momentum['rank'] = ranked_assets['20_day_returns'].rank()
+ranked_momentum
 
 #moving average short/long term
+# (short ma - long ma) / long ma
 ranked_ma_assets = pd.DataFrame(((df.tail(ma_short).mean()-df.tail(ma_long).mean())/df.tail(ma_long).mean()).sort_values(ascending = False))
-ranked_ma_to_trade = pd.concat([ranked_ma_assets.head(asset_count),ranked_ma_assets.tail(asset_count)])
-ranked_ma_to_trade['Direction']= -1
-for row in ranked_ma_to_trade.head(asset_count):
-    ranked_ma_to_trade.head(asset_count)['Direction']= 1
-ranked_ma_to_trade.columns = ['MA_strategy','Direction']
-# ranked_ma_to_trade
-
-#Price ratio
-#list(itertools.combinations(myassetlist, 2))
+ranked_ma_assets.columns = ['MA_crossover']
+ranked_ma_assets['rank'] = ranked_ma_assets.rank()
+ranked_ma_assets
 
 #VPT indicator
+# Reference: https://www.investopedia.com/terms/v/vptindicator.asp
+
 vf=yh(myassetlist)['Volume']
 ranked_pv_assets = pd.DataFrame(((vf*df.pct_change()).cumsum()).pct_change(pv_period).tail(1).sum().sort_values(ascending = False))
-ranked_pv_to_trade = pd.concat([ranked_pv_assets.head(asset_count),ranked_pv_assets.tail(asset_count)])
-ranked_pv_to_trade['Direction']= -1
-for row in ranked_pv_to_trade.head(asset_count):
-    ranked_pv_to_trade.head(asset_count)['Direction']= 1
-ranked_pv_to_trade.columns = ['VPT_strategy','Direction']
-# ranked_pv_to_trade
+ranked_pv_assets
 
-long = ranked_assets[0:asset_count] # top 2 assets
-long['Direction'] = 1
-long.columns = ['20_day_returns','Direction']
-# long
+ranked_pv_assets.columns = ['VPT_Indicator']
+ranked_pv_assets['rank'] = ranked_pv_assets.rank()
+ranked_pv_assets
 
-short = ranked_assets[-asset_count:] # bottom 2 assets
-short['Direction'] = -1
-short.columns = ['20_day_returns','Direction']
-# short
-
-assets_to_trade = pd.concat([long,short])
-
-combined = pd.DataFrame(pd.concat([assets_to_trade,ranked_ma_to_trade,ranked_pv_to_trade])['Direction'])
+combined = pd.DataFrame(pd.concat([ranked_momentum,ranked_ma_assets,ranked_pv_assets])['rank'])
 combined = combined.reset_index()
-combined = combined.groupby('Symbols').sum()
+combined.columns=['Symbols','rank']
+combined = combined.groupby('Symbols').sum().sort_values('rank',ascending=False)
 
 print('Results')
 print(combined)
-combined.sort_values(by='Direction').plot.bar(figsize=(20,15), fontsize=20, rot=0)
+combined.sort_values(by='rank').plot.bar(figsize=(20,15), fontsize=20, rot=0)
