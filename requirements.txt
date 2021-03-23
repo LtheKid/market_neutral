@@ -2,3 +2,5 @@ numpy==1.19.5
 pandas==1.2.0
 pandas-datareader==0.9.0
 matplotlib
+telegram
+python-telegram-bot
